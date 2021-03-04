@@ -12,16 +12,31 @@
 <body>
   <h1>Vue.js</h1>
   <div id="app">
-    {{message}}
+    {{message.toUpperCase() }}
   </div>
-
+  <hr>
+  <button onclick="doBtn();">
+    Click Click!!
+  </button>
+  <input type="text" onInput="doAction(event);">
   <script>
+    var data = {
+      message: 'Hello Vue!!'
+    };
+
     var app = new Vue({
       el: '#app',
-      data: {
-        message: 'Hello Vue!!'
-      }
+      data: data
     })
+
+    function doBtn() {
+      data.message = "You Clicked!!! Fu** You!!!!";
+    }
+
+    function doAction(event) {
+      data.message = event.target.value;
+    }
   </script>
 </body>
+
 </html>
