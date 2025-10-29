@@ -1,25 +1,48 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes
-})
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      redirect: '/dashboard'
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/DashboardView.vue')
+    },
+    {
+      path: '/trainings',
+      name: 'TrainingsList',
+      component: () => import('@/views/TrainingsList.vue')
+    },
+    {
+      path: '/trainings/:id',
+      name: 'TrainingDetail',
+      component: () => import('@/views/TrainingDetail.vue'),
+      props: true
+    },
+    {
+      path: '/participants',
+      name: 'ParticipantsList',
+      component: () => import('@/views/ParticipantsList.vue')
+    },
+    {
+      path: '/participants/:id',
+      name: 'ParticipantDetail',
+      component: () => import('@/views/ParticipantDetail.vue'),
+      props: true
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/NotFound.vue')
+    }
+  ],
+  scrollBehavior() {
+    return { top: 0 };
+  }
+});
 
-export default router
+export default router;
