@@ -1,0 +1,82 @@
+name: Build and Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_FRONTEND_PROJECT_ID }}
+      VERCEL_BACKEND_PROJECT_ID: ${{ secrets.VERCEL_BACKEND_PROJECT_ID }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            backend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run frontend tests
+        run: npm run test --if-present
+
+      - name: Build frontend Docker image
+        run: docker build -t frontend:ci .
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Build backend Docker image
+        run: docker build -t backend:ci ./backend
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Prepare frontend Vercel project link
+        run: |
+          mkdir -p .vercel
+          cat <<EOF > .vercel/project.json
+          {
+            "projectId": "${VERCEL_FRONTEND_PROJECT_ID}",
+            "orgId": "${VERCEL_ORG_ID}"
+          }
+          EOF
+
+      - name: Prepare backend Vercel project link
+        working-directory: backend
+        run: |
+          mkdir -p .vercel
+          cat <<EOF > .vercel/project.json
+          {
+            "projectId": "${VERCEL_BACKEND_PROJECT_ID}",
+            "orgId": "${VERCEL_ORG_ID}"
+          }
+          EOF
+
+      - name: Deploy frontend to Vercel
+        run: |
+          vercel deploy --token "$VERCEL_TOKEN" \
+            --prod --yes
+
+      - name: Deploy backend to Vercel
+        working-directory: backend
+        run: |
+          vercel deploy --token "$VERCEL_TOKEN" \
+            --prod --yes
