@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.DS_Store
+.git
+.gitignore
+.vercel
+dist
+backend
+backend/node_modules
+backend/.nuxt
+backend/.output
+backend/dist

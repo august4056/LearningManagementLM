@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "framework": "vue",
+  "buildCommand": "npm ci && npm run build",
+  "outputDirectory": "dist",
+  "env": {
+    "VUE_APP_API_BASE_URL": "@api-base-url"
+  }
+}
