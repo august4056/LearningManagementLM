@@ -8,6 +8,9 @@ RUN npm ci --legacy-peer-deps
 
 # Copy application source without backend assets to keep the image lean
 COPY babel.config.js ./
+COPY vue.config.js ./
+COPY .eslintrc.js ./.eslintrc.js
+COPY .browserslistrc ./.browserslistrc
 COPY public ./public
 COPY src ./src
 

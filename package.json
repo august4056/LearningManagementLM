@@ -21,7 +21,9 @@
     "@vue/cli-service": "^4.5.11",
     "@vue/compiler-sfc": "^3.0.7",
     "babel-eslint": "^10.1.0",
+    "chokidar": "^3.6.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.7.0"
+    "eslint-plugin-vue": "^7.7.0",
+    "watchpack-chokidar2": "^2.0.1"
   }
 }

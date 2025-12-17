@@ -1,6 +1,10 @@
 # Build stage for the Nuxt backend
-FROM node:18-alpine AS build
+# oxc native bindings require Node >=22.12 or ^20.19 to install
+FROM node:22.12.0 AS build
 WORKDIR /app
+
+ARG NITRO_PRESET=node-server
+ENV NITRO_PRESET=${NITRO_PRESET}
 
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -9,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # Production image
-FROM node:18-alpine
+FROM node:22.12.0
 WORKDIR /app
 ENV NODE_ENV=production
 
