@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:3000/api';
 
 async function handleResponse(response) {
   if (!response.ok) {
@@ -9,21 +9,21 @@ async function handleResponse(response) {
 }
 
 export async function fetchTrainings() {
-  const response = await fetch(`${API_BASE_URL}/api/trainings`);
+  const response = await fetch(`${API_BASE_URL}/trainings`);
   return handleResponse(response);
 }
 
 export async function fetchTrainingById(id) {
-  const response = await fetch(`${API_BASE_URL}/api/trainings/${id}`);
+  const response = await fetch(`${API_BASE_URL}/trainings/${id}`);
   return handleResponse(response);
 }
 
 export async function fetchParticipants() {
-  const response = await fetch(`${API_BASE_URL}/api/participants`);
+  const response = await fetch(`${API_BASE_URL}/participants`);
   return handleResponse(response);
 }
 
 export async function fetchParticipantById(id) {
-  const response = await fetch(`${API_BASE_URL}/api/participants/${id}`);
+  const response = await fetch(`${API_BASE_URL}/participants/${id}`);
   return handleResponse(response);
 }

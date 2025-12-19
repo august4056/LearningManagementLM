@@ -10,7 +10,7 @@ services:
     build:
       context: .
       args:
-        API_BASE_URL: http://backend:3000
+        API_BASE_URL: /api
     ports:
       - "8080:80"
     depends_on:
